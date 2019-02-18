@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="red">#FF0000</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
+    <color name="yellow">#FFFF33</color>
+    <color name="cyan">#00BFA6</color>
+    <color name="napierGreen">#339900</color>
+    <color name="capri">#00D5FF</color>
+    <color name="chocolate">#804000</color>
+    <color name="indigo">#440066</color>
+    <color name="rufous">#991900</color>
+    <color name="linconGreen">#116600</color>
+    <color name="lavenderIndigo">#B366FF</color>
+
+    <string-array name="environmentColors">
+        <item name="red">#FF0000</item>
+        <item name="green">#00FF00</item>
+        <item name="blue">#0000FF</item>
+        <item name="yellow">#FFFF33</item>
+        <item name="cyan">#00BFA6</item>
+        <item name="napierGreen">#339900</item>
+        <item name="capri">#00D5FF</item>
+        <item name="chocolate">#804000</item>
+        <item name="indigo">#440066</item>
+        <item name="rufous">#991900</item>
+        <item name="linconGreen">#116600</item>
+        <item name="lavenderIndigo">#B366FF</item>
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Trồng nấm</string>
+    <string name="ChangeActivity">Thay đổi thông số</string>
+    <string name="Light">Ánh sáng:</string>
+    <string name="Humi">Độ ẩm:</string>
+    <string name="Temp">Nhiệt độ:</string>
+    <string name="Cencious">°C </string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="AutoMode">Chế độ tự động</string>
+    <string name="ManualMode">Chế độ thủ công</string>
+    <string-array name="topic_array">
+        <item>Nhà 1</item>
+        <item>Nhà 2</item>
+    </string-array>
+
+</resources>
