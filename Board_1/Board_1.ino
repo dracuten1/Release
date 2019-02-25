@@ -16,16 +16,16 @@
 #define DHTTYPE DHT22   // DHT 22  (AM2302)
 
 //topic zone *******************************************
-const char* autoTopic="1MyMushroomHousetkb2e32/home/auto";
-const char* manualTopic="2MyMushroomHousetkb2e32/home/manual";
-const char* requestTopic="3MyMushroomHousetkb2e32/home/request";
-const char* configTimeTopic="MyMushroomHousetkb2e32/home/Configtime";
-const char* statusTopic="MyMushroomHousetkb2e32/home/status";
-const char* updateTopic="MyMushroomHousetkb2e32/home/info";
-const char* contentRequestTopic="5MyMushroomHousetkb2e32/home/content";
-const char* contentUpdateTopic="MyMushroomHousetkb2e32/home/update/content";
-const char* listFileRequestTopic="4MyMushroomHousetkb2e32/home/listFile";
-const char* listFileUpdateTopic="MyMushroomHousetkb2e32/home/update/listFile";
+const char* autoTopic="1MyMushroomHousetkb2e32/home1/auto";
+const char* manualTopic="2MyMushroomHousetkb2e32/home1/manual";
+const char* requestTopic="3MyMushroomHousetkb2e32/home1/request";
+const char* configTimeTopic="MyMushroomHousetkb2e32/home1/Configtime";
+const char* statusTopic="MyMushroomHousetkb2e32/home1/status";
+const char* updateTopic="MyMushroomHousetkb2e32/home1/info";
+const char* contentRequestTopic="5MyMushroomHousetkb2e32/home1/content";
+const char* contentUpdateTopic="MyMushroomHousetkb2e32/home1/update/content";
+const char* listFileRequestTopic="4MyMushroomHousetkb2e32/home1/listFile";
+const char* listFileUpdateTopic="MyMushroomHousetkb2e32/home1/update/listFile";
 //end topic zone *******************************************
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -169,11 +169,14 @@ public:
         delay(500);
         }
         isOpen=true;
-        Serial.println("card initialized.");
+        //Serial.println("card initialized.");
         return isOpen;
     }
     String GetListFile(String str) {
       //Serial.println("List file getting.");
+      if(!isOpen){
+        return "";
+      }
       File dir= SD.open(str);
       String lstFiles="";
       while (true) {   
@@ -204,10 +207,11 @@ public:
         return false;
     }
     String ReadFile(String fileName){
+      String strResult="Eror404";
         if(isOpen){
           File entry =  SD.open(fileName);
           //Serial.println(fileName);
-          String strResult="Eror404";
+          
           if(entry){
             strResult="";
             while(entry.available()){
@@ -220,8 +224,8 @@ public:
           }
           
           //Serial.println(strResult);
-          return strResult;
         }
+        return strResult;
     }
     String GetSettingFile(){
         String settingStr="";
@@ -334,7 +338,7 @@ public:
         s+= humidity;
         Serial.println(s);
         lightCtller->SetColor(currentCon.R,currentCon.G,currentCon.B);        
-        //Serial.println("Control:");
+        //Serial.println("Control done");
     }
     void SetSD(bool sd){
         isSdOpen=sd;
@@ -663,6 +667,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       sdCard.WriteSetting(false,"");
       sdCard.WriteNewFile("manual.txt",str);
       conditionCtrler->SetMode(false,str);
+      
       //Serial.println("Setup manual done");
       break;
     }
@@ -681,7 +686,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       //Serial.println("------------------------------------------------");
       //Serial.println(lstFiles.c_str());
       client.publish(listFileUpdateTopic,lstFiles.c_str());
-       client.publish(listFileUpdateTopic,"Allo");
+       //client.publish(listFileUpdateTopic,"Allo");
       break;
     }
     case 5:{

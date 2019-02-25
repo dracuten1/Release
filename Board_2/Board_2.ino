@@ -17,7 +17,7 @@ int luxCon=600;
  
 class LightController{
 private:   
-    const int NUMPIXELS =16;
+    const int NUMPIXELS =8*4;
 
     int _currentLedOff=0;
     int _r=255;
@@ -40,20 +40,24 @@ private:
 public:
     void ControlNeoColor() {
           for(int i=0;i<NUMPIXELS;i++){
-              if(i==8){
-                  int temp=_r;
-                  _r=_g;
-                  _g=temp;  
-              }
+//              if(i==32){
+//                  int temp=_r;
+//                  _r=_g;
+//                  _g=temp;  
+//              }
+//              if(i==40){
+//                int temp=_r;
+//                _r=_g;
+//                _g=temp;
+//             }
               if(i<_currentLedOff){
                   pixels.setPixelColor(i, pixels.Color(0,0,0));  
               }else{
                   pixels.setPixelColor(i, pixels.Color(_r,_g,_b));
               }   
+          
+              
           }
-          int temp=_r;
-          _r=_g;
-          _g=temp;
           pixels.show();
       }
      void SetColor(int r, int g, int b){
@@ -94,45 +98,46 @@ public:
 LightController *light;
 void setup() {
   //Khởi tạo Serial ở baudrate 9600 (trùng với HOST)
+
   Serial.begin(19200);
   while (!Serial) {
         ; // wait for serial port to connect. Needed for Leonardo only
     }
+  //Serial.println("Restart");
   lcd.begin();
   // Print a message to the LCD.
   lcd.backlight();
+    String s="Set up....";
+  lcd.setCursor(0,0);
+  lcd.print(s);
   //pinMode 2 đèn LED là OUTPUT
   light=new LightController();
   pinMode(TEMP_RELAY,OUTPUT);
   pinMode(WATER_RELAY,OUTPUT);
   pinMode(CELL_RELAY,OUTPUT);
-  String s="Set up....";
-  lcd.setCursor(0,0);
-  lcd.print(s);
-  
-  // Một số hàm trong thư viện Serial Command
-  
-    // Khi có câu lệnh tên là LED_RED sẽ chạy hàm led_red
-  
-  
+
   sCmd.addCommand("Light_R", LightR);
-  sCmd.addCommand("Light_G", LightG);
-  sCmd.addCommand("Light_B", LightB);
-   sCmd.addCommand("Set_Temp",Temp);
-   sCmd.addCommand("Temp_Relay", SetTempCon);
-   sCmd.addCommand("Set_Lux",Lux);
+    sCmd.addCommand("Light_G", LightG);
+    sCmd.addCommand("Light_B", LightB);
+    sCmd.addCommand("Set_Temp",Temp);
+     sCmd.addCommand("Temp_Relay", SetTempCon);
+     sCmd.addCommand("Set_Lux",Lux);
    sCmd.addCommand("Lux_Control", SetLuxCon);
    sCmd.addCommand("Set_Humi",Water);
    sCmd.addCommand("Humi_Relay", HumiCon);
-   s="Set up done";
+    
+
+   s="Dang cai dat";
   lcd.setCursor(0,0);
   lcd.print(s);
+  delay(2000);
   //Serial.println("Setup done");
 }
  
 void loop() {
   sCmd.readSerial();
- light->ControlNeoColor();
+  light->ControlNeoColor();
+  //Serial.println("Loop over");
   //Bạn không cần phải thêm bất kỳ dòng code nào trong hàm loop này cả
 }
 
@@ -193,8 +198,8 @@ void Temp() {
   arg = sCmd.next();
   
   int value = atoi(arg); // Chuyển chuỗi thành số
-  Serial.print("Temp: ");
-  Serial.println(value);
+  //Serial.print("Temp: ");
+  //Serial.println(value);
   String s="             ";
   lcd.setCursor(0,1);
   lcd.print(s);
@@ -208,7 +213,7 @@ void Temp() {
   }
   else if(value<tempCon-0.5){
     digitalWrite(TEMP_RELAY,HIGH);
-    digitalWrite(CELL_RELAY,LOW)
+    digitalWrite(CELL_RELAY,LOW);
   }
   else if(value<=tempCon+0.2||value>=tempCon-0.2){
     digitalWrite(TEMP_RELAY,LOW);
@@ -220,7 +225,7 @@ void Lux(){
   char *arg;
   arg = sCmd.next();
   
-  int value = atoi(arg); // Chuyển chuỗi thành số
+  int value = atof(arg); // Chuyển chuỗi thành số
   String s="             ";
   lcd.setCursor(0,2);
   lcd.print(s);
@@ -267,6 +272,7 @@ void LightG(){
   lcd.print(s);
 }
 void LightB(){
+  
   //Đoạn code này dùng để đọc TỪNG tham số. Các tham số mặc định có kiểu dữ liệu là "chuỗi"
   char *arg;
   arg = sCmd.next();
